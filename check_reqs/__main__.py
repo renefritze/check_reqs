@@ -1,7 +1,6 @@
 # type: ignore[attr-defined]
 from enum import Enum
 from pathlib import Path
-from random import choice
 
 import typer
 from rich.console import Console

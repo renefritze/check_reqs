@@ -2,13 +2,16 @@ name: build
 
 on: [push, pull_request]
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.7", "3.9"]
-
+    env:
+      # cache busting if requirements haven't changed
+      CACHE_EPOCH: 0
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -23,7 +26,7 @@ jobs:
       uses: actions/cache@v2.1.7
       with:
         path: .venv
-        key: venv-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
+        key: venv-${{ env.CACHE_EPOCH }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
     - name: Install dependencies
       run: |
         poetry config virtualenvs.in-project true
@@ -40,3 +43,8 @@ jobs:
     - name: Run safety checks
       run: |
         make check-safety
+
+    - name: Check self requirements
+      run: |
+        poetry run pip install -r requirements.txt
+        poetry run check_reqs requirements.txt
