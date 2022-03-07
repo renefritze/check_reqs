@@ -13,7 +13,7 @@ jobs:
       # cache busting if requirements haven't changed
       CACHE_EPOCH: 0
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2.3.2
       with:
