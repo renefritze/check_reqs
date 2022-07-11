@@ -2,12 +2,13 @@
 # This file is part of the pyMOR project (https://www.pymor.org).
 # Copyright 2013-2021 pyMOR developers and contributors. All rights reserved.
 # License: BSD 2-Clause License (https://opensource.org/licenses/BSD-2-Clause)
+from typing import Dict
 
 import pkg_resources
 import typer
 
 
-def _output_rich(filename, status):
+def _output_rich(filename: str, status: Dict[str, object]) -> None:
     from rich.console import Console
     from rich.table import Table
 
@@ -21,7 +22,7 @@ def _output_rich(filename, status):
     console.print(tbl)
 
 
-def _output_plain(filename, status):
+def _output_plain(filename: str, status: Dict[str, object]) -> None:
     print(f"Requirements checked for {filename}")
     for req, st in status.items():
         if st is None:
@@ -30,7 +31,7 @@ def _output_plain(filename, status):
             print(f"Failed {req}: {st}")
 
 
-def _process_file(filename):
+def _process_file(filename) -> Dict[str, object]:
     req_file = open(filename).read().splitlines()
     status = {}
     for line in req_file:
@@ -44,11 +45,12 @@ def _process_file(filename):
             status[requirement] = d
         # Requirement.parse cannot raises on include and comment directives
         except (ValueError,) as f:
+            line = line.lstrip()
             if line.startswith("-r"):
                 status.update(_process_file(line[3:]))
             elif line.startswith("http"):
                 status[line] = "http link skipped"
-            elif line.startswith("#"):
+            elif line.startswith("#") or line == "":
                 continue
             else:
                 raise RuntimeError(f"Error parsing {filename}:\n{f}")
