@@ -44,11 +44,12 @@ def _process_file(filename):
             status[requirement] = d
         # Requirement.parse cannot raises on include and comment directives
         except (ValueError,) as f:
+            line = line.lstrip()
             if line.startswith("-r"):
                 status.update(_process_file(line[3:]))
             elif line.startswith("http"):
                 status[line] = "http link skipped"
-            elif line.startswith("#"):
+            elif line.startswith("#") or line == "":
                 continue
             else:
                 raise RuntimeError(f"Error parsing {filename}:\n{f}")
