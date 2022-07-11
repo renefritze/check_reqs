@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "check_reqs"
-version = "0.2.0"
+version = "1.0.0"
 description = "Checks if all requirements from a file are installed in the current Python env"
 readme = "README.md"
 authors = ["renefritze <coding@fritze.me>"]
