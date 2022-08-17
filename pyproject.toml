@@ -1,66 +1,35 @@
 # Poetry pyproject.toml: https://python-poetry.org/docs/pyproject/
 [build-system]
-requires = ["poetry_core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry]
-name = "check_reqs"
-version = "1.0.0"
-description = "Checks if all requirements from a file are installed in the current Python env"
-readme = "README.md"
-authors = ["renefritze <coding@fritze.me>"]
-license = "MIT"
-repository = "https://github.com/renefritze/check_reqs"
-homepage = "https://github.com/renefritze/check_reqs"
+[project.scripts]
+check_reqs = "check_reqs.__main__:app"
 
-# Keywords description https://python-poetry.org/docs/pyproject/#keywords
-keywords = []  #! Update me
-
-# Pypi classifiers: https://pypi.org/classifiers/
-classifiers = [  #! Update me
-  "Development Status :: 3 - Alpha",
-  "Intended Audience :: Developers",
-  "Operating System :: OS Independent",
-  "Topic :: Software Development :: Libraries :: Python Modules",
-  "License :: OSI Approved :: MIT License",
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
+[project.optional-dependencies]
+dev = [
+"bandit~=1.7.4",
+"black~=22.1",
+"darglint~=1.8.1",
+"isort[colors]~=5.10.1",
+"mypy~=0.941",
+"mypy-extensions~=0.4.3",
+"pre-commit~=2.17.0",
+"pydocstyle~=6.1.1",
+"pylint~=2.11.1",
+"pytest~=7.1.1",
+"pyupgrade~=2.31.1",
+"safety~=1.10.3",
+"coverage~=6.3",
+"coverage-badge~=1.1.0",
+"pytest-html~=3.1.1",
+"pytest-cov~=3.0.0",
+"pytest-pycharm~=0.7.0",
 ]
-
-[tool.poetry.scripts]
-# Entry points for the package https://python-poetry.org/docs/pyproject/#scripts
-"check_reqs" = "check_reqs.__main__:app"
-
-[tool.poetry.dependencies]
-python = "^3.7"
-importlib_metadata = {version = "^4.5.0", python = "<3.8"}
-typer = {extras = ["all"], version = ">=0.4,<0.7"}
-rich = ">=10.14,<13.0"
-
-[tool.poetry.dev-dependencies]
-bandit = "^1.7.4"
-black = {version = "^22.6", allow-prereleases = true}
-darglint = "^1.8.1"
-isort = {extras = ["colors"], version = "^5.10.1"}
-mypy = "^0.971"
-mypy-extensions = "^0.4.3"
-pre-commit = "^2.20.0"
-pydocstyle = "^6.1.1"
-pylint = "^2.13.9"
-pytest = "^7.1.2"
-pyupgrade = "^2.37.3"
-safety = "^2.1.1"
-coverage = "^6.4"
-coverage-badge = "^1.1.0"
-pytest-html = "^3.1.1"
-pytest-cov = "^3.0.0"
-pytest-pycharm = "^0.7.0"
 
 [tool.black]
 # https://github.com/psf/black
-target-version = ["py37"]
+target-version = ["py39"]
 line-length = 119
 color = true
 
@@ -129,14 +98,12 @@ doctest_optionflags = ["NUMBER", "NORMALIZE_WHITESPACE", "IGNORE_EXCEPTION_DETAI
 # Extra options:
 addopts = [
   "--strict-markers",
-  "--tb=short",
-  "--doctest-modules",
-  "--doctest-continue-on-failure",
 ]
 
 [tool.coverage.run]
 source = ["tests"]
 
+[tool.hatch]
 [coverage.paths]
 source = "check_reqs"
 
@@ -146,3 +113,34 @@ branch = true
 [coverage.report]
 fail_under = 50
 show_missing = true
+
+[project]
+dependencies = [
+  "typer[all]",
+  "rich",
+]
+
+name = "check_reqs"
+version = "0.2.0"
+description = "Checks if all requirements from a file are installed in the current Python env"
+readme = "README.md"
+authors = [
+  { name = "René Fritze", email = "coding@fritze.me" },
+]
+
+requires-python = ">=3.7"
+license = "MIT"
+classifiers = [  #! Update me
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+]
+[project.urls]
+repository = "https://github.com/renefritze/check_reqs"
+homepage = "https://github.com/renefritze/check_reqs"
