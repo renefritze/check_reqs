@@ -19,32 +19,18 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install poetry
-      run: make poetry-download
+    - name: Install Hatch
+      run: pip install --upgrade hatch
 
     - name: Set up cache
       uses: actions/cache@v3
       with:
         path: .venv
-        key: venv-${{ env.CACHE_EPOCH }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
+        key: venv-${{ env.CACHE_EPOCH }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
     - name: Install dependencies
       run: |
-        poetry config virtualenvs.in-project true
-        poetry install
-
-    - name: Run style checks
+        pip install .[dev]
+    - name: Pytest
       run: |
-        make check-codestyle
-
-    - name: Run tests
-      run: |
-        make test
-
-    - name: Run safety checks
-      run: |
-        make check-safety
-
-    - name: Check self requirements
-      run: |
-        poetry run pip install -r requirements.txt
-        poetry run check_reqs requirements.txt
+        pytest
+    
