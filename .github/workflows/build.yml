@@ -23,7 +23,7 @@ jobs:
       run: pip install --upgrade hatch
 
     - name: Set up cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: .venv
         key: venv-${{ env.CACHE_EPOCH }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
